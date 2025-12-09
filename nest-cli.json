@@ -1,31 +1,31 @@
 {
 	"$schema": "https://json.schemastore.org/nest-cli",
 	"collection": "@nestjs/schematics",
-	"sourceRoot": "apps/resaller-api/src",
+	"sourceRoot": "apps/locohub-api/src",
 	"compilerOptions": {
 		"deleteOutDir": true,
 		"webpack": true,
-		"tsConfigPath": "apps/resaller-api/tsconfig.app.json"
+		"tsConfigPath": "apps/locohub-api/tsconfig.app.json"
 	},
 	"monorepo": true,
-	"root": "apps/resaller-api",
+	"root": "apps/locohub-api",
 	"projects": {
-		"resaller-api": {
+		"locohub-api": {
 			"type": "application",
-			"root": "apps/resaller-api",
+			"root": "apps/locohub-api",
 			"entryFile": "main",
-			"sourceRoot": "apps/resaller-api/src",
+			"sourceRoot": "apps/locohub-api/src",
 			"compilerOptions": {
-				"tsConfigPath": "apps/resaller-api/tsconfig.app.json"
+				"tsConfigPath": "apps/locohub-api/tsconfig.app.json"
 			}
 		},
-		"resaller-batch": {
+		"locohub-batch": {
 			"type": "application",
-			"root": "apps/resaller-batch",
+			"root": "apps/locohub-batch",
 			"entryFile": "main",
-			"sourceRoot": "apps/resaller-batch/src",
+			"sourceRoot": "apps/locohub-batch/src",
 			"compilerOptions": {
-				"tsConfigPath": "apps/resaller-batch/tsconfig.app.json"
+				"tsConfigPath": "apps/locohub-batch/tsconfig.app.json"
 			}
 		}
 	}
