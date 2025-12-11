@@ -43,7 +43,7 @@ export class PropertyUpdate {
 	@IsInt()
 	@Min(1)
 	@Field(() => Int, { nullable: true })
-	propertyBads?: number;
+	propertyBeds?: number;
 
 	@IsOptional()
 	@IsInt()
@@ -62,11 +62,11 @@ export class PropertyUpdate {
 
 	@IsOptional()
 	@Field(() => Boolean, { nullable: true })
-	propertBarter?: boolean;
+	propertyBarter?: boolean;
 
 	@IsOptional()
 	@Field(() => Boolean, { nullable: true })
-	propertRent?: boolean;
+	propertyRent?: boolean;
 
 	soldAt?: Date;
 
