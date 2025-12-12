@@ -1,7 +1,6 @@
 import { BadRequestException, Injectable, InternalServerErrorException } from '@nestjs/common';
 import { PropertyService } from '../property/property.service';
 import { MemberService } from '../member/member.service';
-import { BoardArticleService } from '../board-article/board-article.service';
 import { Model, ObjectId } from 'mongoose';
 import { CommentInput, CommentsInquiry } from '../../libs/dto/comment/comment.input';
 import { Direction, Message } from '../../libs/enums/common.enum';
@@ -18,7 +17,6 @@ export class CommentService {
 		@InjectModel('Comment') private readonly commentModel: Model<Comment>, //
 		private readonly memberService: MemberService,
 		private readonly propertyService: PropertyService,
-		private readonly boardArticleService: BoardArticleService,
 	) {}
 
 	public async createComment(memberId: ObjectId, input: CommentInput): Promise<Comment> {
@@ -36,13 +34,6 @@ export class CommentService {
 				await this.propertyService.propertyStatusEditor({
 					_id: input.commentRefId,
 					targetKey: 'propertyComments',
-					modifier: 1,
-				});
-				break;
-			case CommentGroup.ARTICLE:
-				await this.boardArticleService.boardArticleStatsEditor({
-					_id: input.commentRefId,
-					targetKey: 'articleComments',
 					modifier: 1,
 				});
 				break;

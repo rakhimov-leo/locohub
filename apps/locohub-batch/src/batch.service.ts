@@ -60,8 +60,8 @@ export class BatchService {
 			.exec();
 
 		const promisedList = agents.map(async (ele: Member) => {
-			const { _id, memberProperties, memberLikes, memberArticles, memberViews } = ele;
-			const rank = memberProperties * 5 + memberArticles * 3 + memberLikes * 2 + memberViews * 1;
+			const { _id, memberProperties, memberLikes, memberViews } = ele;
+			const rank = memberProperties * 5 + memberLikes * 2 + memberViews * 1;
 			return await this.memberModel.findByIdAndUpdate(_id, { memberRank: rank });
 		});
 		await Promise.all(promisedList);
