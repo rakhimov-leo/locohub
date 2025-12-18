@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, InternalServerErrorException } from '@nestjs/common';
+import { BadRequestException, Injectable, InternalServerErrorException, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, ObjectId } from 'mongoose';
 import { Properties, Property } from '../../libs/dto/property/property';
@@ -24,6 +24,8 @@ import { LikeGroup } from '../../libs/enums/like.enum';
 
 @Injectable()
 export class PropertyService {
+	private readonly logger = new Logger(PropertyService.name);
+
 	constructor(
 		@InjectModel('Property') private readonly propertyModel: Model<Property>,
 		private memberService: MemberService,
@@ -41,7 +43,7 @@ export class PropertyService {
 			});
 			return result;
 		} catch (err) {
-			console.log('Error, Service.model:', err.message);
+			this.logger.error(`Error creating property: ${err.message}`, err.stack);
 			throw new BadRequestException(Message.CREATE_FAILED);
 		}
 	}
@@ -129,7 +131,6 @@ export class PropertyService {
 		};
 
 		this.shapeMatchQuery(match, input);
-		console.log(match);
 
 		const result = await this.propertyModel
 			.aggregate([
@@ -280,7 +281,7 @@ export class PropertyService {
 		};
 
 		if (propertyStatus === PropertyStatus.SOLD) soldAt = moment().toDate();
-		else if (propertyStatus === PropertyStatus.DELETE) soldAt = moment().toDate();
+		else if (propertyStatus === PropertyStatus.DELETE) deletedAt = moment().toDate();
 
 		const result = await this.propertyModel.findOneAndUpdate(search, input, { new: true }).exec();
 		if (!result) throw new InternalServerErrorException(Message.UPDATE_FAILED);
