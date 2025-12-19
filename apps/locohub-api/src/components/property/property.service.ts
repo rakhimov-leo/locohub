@@ -143,14 +143,16 @@ export class PropertyService {
 							{ $limit: input.limit },
 							lookupAuthMemberLiked(memberId),
 							lookupMember,
-							{ $unwind: '$memberData' },
+							{ $unwind: { path: '$memberData', preserveNullAndEmptyArrays: true } },
 						],
 						metaCounter: [{ $count: 'total' }],
 					},
 				},
 			])
 			.exec();
-		if (!result.length) throw new InternalServerErrorException(Message.NO_DATA_FOUND);
+		if (!result.length || !result[0]) {
+			return { list: [], metaCounter: [] };
+		}
 
 		return result[0];
 	}
@@ -205,14 +207,16 @@ export class PropertyService {
 							{ $skip: (input.page - 1) * input.limit },
 							{ $limit: input.limit },
 							lookupMember,
-							{ $unwind: '$memberData' },
+							{ $unwind: { path: '$memberData', preserveNullAndEmptyArrays: true } },
 						],
 						metaCounter: [{ $count: 'total' }],
 					},
 				},
 			])
 			.exec();
-		if (!result.length) throw new InternalServerErrorException(Message.NO_DATA_FOUND);
+		if (!result.length || !result[0]) {
+			return { list: [], metaCounter: [] };
+		}
 
 		return result[0];
 	}
@@ -260,7 +264,7 @@ export class PropertyService {
 							{ $skip: (input.page - 1) * input.limit },
 							{ $limit: input.limit },
 							lookupMember,
-							{ $unwind: '$memberData' },
+							{ $unwind: { path: '$memberData', preserveNullAndEmptyArrays: true } },
 						],
 						metaCounter: [{ $count: 'total' }],
 					},
@@ -268,7 +272,9 @@ export class PropertyService {
 			])
 			.exec();
 
-		if (!result.length) throw new InternalServerErrorException(Message.NO_DATA_FOUND);
+		if (!result.length || !result[0]) {
+			return { list: [], metaCounter: [] };
+		}
 
 		return result[0];
 	}
