@@ -1,32 +1,32 @@
 {
-  "$schema": "https://json.schemastore.org/nest-cli",
-  "collection": "@nestjs/schematics",
-  "sourceRoot": "apps/locohub-api/src",
-  "compilerOptions": {
-    "deleteOutDir": true,
-    "webpack": true,
-    "tsConfigPath": "apps/locohub-api/tsconfig.app.json"
-  },
-  "monorepo": true,
-  "root": "apps/locohub-api",
-  "projects": {
-    "locohub-api": {
-      "type": "application",
-      "root": "apps/locohub-api",
-      "entryFile": "main",
-      "sourceRoot": "apps/locohub-api/src",
-      "compilerOptions": {
-        "tsConfigPath": "apps/locohub-api/tsconfig.app.json"
-      }
-    },
-    "locohub-batch": {
-      "type": "application",
-      "root": "apps/locohub-batch",
-      "entryFile": "main",
-      "sourceRoot": "apps/locohub-batch/src",
-      "compilerOptions": {
-        "tsConfigPath": "apps/locohub-batch/tsconfig.app.json"
-      }
-    }
-  }
+	"$schema": "https://json.schemastore.org/nest-cli",
+	"collection": "@nestjs/schematics",
+	"sourceRoot": "apps/locohub-api/src",
+	"compilerOptions": {
+		"deleteOutDir": true,
+		"webpack": true,
+		"tsConfigPath": "apps/locohub-api/tsconfig.app.json"
+	},
+	"monorepo": true,
+	"root": "apps/locohub-api",
+	"projects": {
+		"locohub-api": {
+			"type": "application",
+			"root": "apps/locohub-api",
+			"entryFile": "main",
+			"sourceRoot": "apps/locohub-api/src",
+			"compilerOptions": {
+				"tsConfigPath": "apps/locohub-api/tsconfig.app.json"
+			}
+		},
+		"locohub-batch": {
+			"type": "application",
+			"root": "apps/locohub-batch",
+			"entryFile": "main",
+			"sourceRoot": "apps/locohub-batch/src",
+			"compilerOptions": {
+				"tsConfigPath": "apps/locohub-batch/tsconfig.app.json"
+			}
+		}
+	}
 }

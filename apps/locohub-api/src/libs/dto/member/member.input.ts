@@ -1,6 +1,6 @@
 import { Field, InputType, Int } from '@nestjs/graphql';
 import { IsIn, IsNotEmpty, IsOptional, Length, Min } from 'class-validator';
-import { MemberAuthType, MemberStatus, MemberType } from '../../enums/memeber.enum';
+import { MemberAuthType, MemberStatus, MemberType } from '../../enums/member.enum';
 import { availableAgentSorts, availableMemberSorts, availablePropertySorts } from '../../config';
 import { Direction } from '../../enums/common.enum';
 import { PropertyStatus } from '../../enums/property.enum';
@@ -43,37 +43,36 @@ export class LoginInput {
 	memberPassword: string;
 }
 
-
 @InputType()
 class AISearch {
 	@IsOptional()
 	@Field(() => PropertyStatus, { nullable: true })
-	propertyStatus?: PropertyStatus
+	propertyStatus?: PropertyStatus;
 
 	@IsOptional()
 	@Field(() => String, { nullable: true })
-	text?: string
+	text?: string;
 }
 @InputType()
 export class AgentsInquiry {
 	@IsNotEmpty()
 	@Min(1)
 	@Field(() => Int)
-	page: number
+	page: number;
 
 	@IsNotEmpty()
 	@Min(1)
 	@Field(() => Int)
-	limit: number
+	limit: number;
 
 	@IsOptional()
 	@IsIn(availableAgentSorts)
 	@Field(() => String, { nullable: true })
-	sort?: string
+	sort?: string;
 
 	@IsOptional()
 	@Field(() => Direction, { nullable: true })
-	direction?: Direction
+	direction?: Direction;
 
 	@IsNotEmpty()
 	@Field(() => AISearch)
@@ -84,37 +83,36 @@ export class AgentsInquiry {
 class MISearch {
 	@IsOptional()
 	@Field(() => MemberStatus, { nullable: true })
-	memberStatus?: MemberStatus
+	memberStatus?: MemberStatus;
 
 	@IsOptional()
 	@Field(() => MemberType, { nullable: true })
-	memberType?: MemberType
-
+	memberType?: MemberType;
 
 	@IsOptional()
 	@Field(() => String, { nullable: true })
-	text?: string
+	text?: string;
 }
 @InputType()
 export class MembersInquiry {
 	@IsNotEmpty()
 	@Min(1)
 	@Field(() => Int)
-	page: number
+	page: number;
 
 	@IsNotEmpty()
 	@Min(1)
 	@Field(() => Int)
-	limit: number
+	limit: number;
 
 	@IsOptional()
 	@IsIn(availableMemberSorts)
 	@Field(() => String, { nullable: true })
-	sort?: string
+	sort?: string;
 
 	@IsOptional()
 	@Field(() => Direction, { nullable: true })
-	direction?: Direction
+	direction?: Direction;
 
 	@IsNotEmpty()
 	@Field(() => MISearch)
@@ -133,23 +131,23 @@ export class AgentPropertiesInquiry {
 	@IsNotEmpty()
 	@Min(1)
 	@Field(() => Int)
-	page: number
+	page: number;
 
 	@IsNotEmpty()
 	@Min(1)
 	@Field(() => Int)
-	limit: number
+	limit: number;
 
 	@IsOptional()
 	@IsIn(availablePropertySorts)
 	@Field(() => String, { nullable: true })
-	sort?: string
+	sort?: string;
 
 	@IsOptional()
 	@Field(() => Direction, { nullable: true })
-	direction?: Direction
+	direction?: Direction;
 
 	@IsNotEmpty()
 	@Field(() => AISearch)
-	search: AISearch
+	search: AISearch;
 }

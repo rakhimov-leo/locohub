@@ -10,58 +10,58 @@ export class Property {
 	_id: ObjectId | null;
 
 	@Field(() => PropertyType)
-	propertyType: PropertyType
+	propertyType: PropertyType;
 
 	@Field(() => PropertyStatus)
-	propertyStatus: PropertyStatus
+	propertyStatus: PropertyStatus;
 
 	@Field(() => PropertyLocation)
-	propertyLocation: PropertyLocation
+	propertyLocation: PropertyLocation;
 
 	@Field(() => String)
-	propertyAddress: string
+	propertyAddress: string;
 
 	@Field(() => String)
-	propertyTitle: string
+	propertyTitle: string;
 
 	@Field(() => Number)
-	propertyPrice: number
+	propertyPrice: number;
 
 	@Field(() => Number)
-	propertySquare: number
+	propertySquare: number;
 
 	@Field(() => Int)
-	propertyBeds: number
+	propertyBeds: number;
 
 	@Field(() => Int)
-	propertyRooms: number
+	propertyRooms: number;
 
 	@Field(() => Int)
-	propertyViews: number
+	propertyViews: number;
 
 	@Field(() => Int)
-	propertyLikes: number
+	propertyLikes: number;
 
 	@Field(() => Int)
-	propertyComments: number
+	propertyComments: number;
 
 	@Field(() => Int)
-	propertyRank: number
+	propertyRank: number;
 
 	@Field(() => [String])
-	propertyImages: string[]
+	propertyImages: string[];
 
 	@Field(() => String, { nullable: true })
-	propertyDesc?: string
+	propertyDesc?: string;
 
 	@Field(() => Boolean)
-	propertyBarter: boolean
+	propertyBarter: boolean;
 
 	@Field(() => Boolean)
-	propertyRent: boolean
+	propertyRent: boolean;
 
 	@Field(() => String)
-	memberId: ObjectId
+	memberId: ObjectId;
 
 	@Field(() => Date, { nullable: true })
 	soldAt?: Date;
@@ -81,17 +81,17 @@ export class Property {
 	/** from aggregation **/
 
 	@Field(() => Member, { nullable: true })
-	memberData?: Member
+	memberData?: Member;
 
 	@Field(() => [MeLiked], { nullable: true })
-	meLiked?: MeLiked[]
+	meLiked?: MeLiked[];
 }
 
 @ObjectType()
 export class Properties {
 	@Field(() => [Property])
-	list: Property[]
+	list: Property[];
 
 	@Field(() => [TotalCounter], { nullable: true })
-	metaCounter: TotalCounter[]
+	metaCounter: TotalCounter[];
 }

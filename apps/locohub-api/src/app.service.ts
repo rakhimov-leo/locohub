@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class AppService {
-  getHello(): string {
-    return 'Welcome to LocoHub API Server!';
-  }
+	getHello(): string {
+		return 'Welcome to locohub API Server!';
+	}
 }

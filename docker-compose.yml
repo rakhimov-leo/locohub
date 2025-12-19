@@ -1,0 +1,50 @@
+version: '3.3'
+
+services:
+  locohub-api:
+    container_name: locohub-api
+    restart: always
+    image: node:20.10.0
+    ports:
+      - 4001:3007
+    volumes:
+      - ./:/usr/src/locohub
+    working_dir: /usr/src/locohub
+    environment:
+      - NODE_ENV=production
+      - PORT_API=3007
+      - MONGO_PROD=${MONGO_PROD:-mongodb://localhost:27017/locohub}
+      - MONGO_DEV=${MONGO_DEV:-mongodb://localhost:27017/locohub}
+    networks:
+      - monorepo-network
+
+    # FOR PRODUCTION
+    command: bash -c "npm install --include=dev && npm run build:api && npm run start:prod"
+
+  locohub-batch:
+    container_name: locohub-batch
+    restart: unless-stopped
+    image: node:20.10.0
+    ports:
+      - 4002:3008
+    volumes:
+      - ./:/usr/src/locohub
+    working_dir: /usr/src/locohub
+    environment:
+      - NODE_ENV=production
+      - PORT_BATCH=3008
+      - MONGO_PROD=${MONGO_PROD:-mongodb://localhost:27017/locohub}
+      - MONGO_DEV=${MONGO_DEV:-mongodb://localhost:27017/locohub}
+    networks:
+      - monorepo-network
+
+    # FOR PRODUCTION
+    command: bash -c "npm install --include=dev && npm run build:batch && npm run start:prod:batch"
+
+networks:
+  monorepo-network:
+    driver: bridge
+# locohub-next localhost:4000 <=> container:3000
+# locohub-api localhost:4001 <=> container:3007
+# locohub-batch localhost:4002 <=> container:3008
+

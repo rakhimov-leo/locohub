@@ -4,6 +4,6 @@ import { Query, Resolver } from '@nestjs/graphql';
 export class AppResolver {
 	@Query(() => String)
 	public sayHello(): string {
-		return 'GRAPHQL API server';
+		return 'GRAPHQL API server from LocoHub';
 	}
 }
