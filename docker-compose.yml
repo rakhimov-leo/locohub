@@ -19,7 +19,8 @@ services:
       - monorepo-network
 
     # FOR PRODUCTION
-    command: bash -c "npm install && npm run build:api && npm run start:prod"
+    # Install all dependencies (including devDependencies for nest CLI)
+    command: bash -c "npm install --include=dev && npm run build:api && npm run start:prod"
 
   locohub-batch:
     container_name: locohub-batch
@@ -39,7 +40,8 @@ services:
       - monorepo-network
 
     # FOR PRODUCTION
-    command: bash -c "npm install && npm run build && npm run start:prod:batch"
+    # Install all dependencies (including devDependencies for nest CLI)
+    command: bash -c "npm install --include=dev && npm run build:batch && npm run start:prod:batch"
 
 networks:
   monorepo-network:
