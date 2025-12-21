@@ -18,7 +18,25 @@ export class LoggingInterceptor implements NestInterceptor {
         } else if (requestType === 'graphql') {
             /* (1) PRINT REQUEST **/
             const gqlContext = GqlExecutionContext.create(context);
-            this.logger.log(`${this.stringify(gqlContext.getContext().req?.body)}`, 'Request');
+            const req = gqlContext.getContext().req;
+            const requestBody = req?.body;
+            
+            // Log request details to identify empty queries
+            if (requestBody) {
+                const hasQuery = requestBody.query && requestBody.query.trim().length > 0;
+                const operationName = requestBody.operationName || 'UNNAMED';
+                const method = req?.method || 'UNKNOWN';
+                const url = req?.url || 'UNKNOWN';
+                const userAgent = req?.headers?.['user-agent'] || 'UNKNOWN';
+                
+                if (!hasQuery) {
+                    this.logger.warn(`[EMPTY QUERY] Method: ${method}, URL: ${url}, Operation: ${operationName}, User-Agent: ${userAgent.substring(0, 50)}`);
+                } else {
+                    this.logger.log(`${this.stringify(requestBody)}`, 'Request');
+                }
+            } else {
+                this.logger.warn(`[NO BODY] Request without body`);
+            }
 
             /* (2) Error handling via QraphQL */
             /* (3) No Error, giving Response below */

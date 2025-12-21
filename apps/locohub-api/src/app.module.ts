@@ -15,15 +15,23 @@ import { SocketModule } from './socket/socket.module';
 		ConfigModule.forRoot(),
 		GraphQLModule.forRoot({
 			driver: ApolloDriver,
-			playground: process.env.NODE_ENV !== 'production', // Disable playground in production
+			// Apollo Server v4 uses Apollo Studio Explorer instead of Playground
+			// Explorer is available at /graphql endpoint (GET request)
+			playground: false, // Playground is deprecated in Apollo Server v4
+			introspection: true, // Always enable GraphQL introspection for Explorer
+			debug: true, // Enable debug mode
 			uploads: false,
 			autoSchemaFile: true,
+			csrfPrevention: false, // Disable CSRF protection for GraphQL (handled by CORS)
 			formatError: (error: T) => {
 				const graphQLFormattedError = {
 					code: error?.extensions.code,
 					message: error?.extensions?.exception?.message || error?.extensions?.response?.message || error.message,
 				};
-				console.log('GRAPHQL GLOBAL ERR:', graphQLFormattedError);
+				// Don't log empty query errors (common with GraphQL Playground GET requests)
+				if (error?.message && !error.message.includes('must contain a non-empty `query`')) {
+					console.log('GRAPHQL GLOBAL ERR:', graphQLFormattedError);
+				}
 				return graphQLFormattedError;
 			},
 		}),
