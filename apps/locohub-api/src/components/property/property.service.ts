@@ -49,13 +49,31 @@ export class PropertyService {
 	}
 
 	public async getProperty(memberId: ObjectId, propertyId: ObjectId): Promise<Property> {
-		const search: T = {
-			_id: propertyId,
-			propertyStatus: PropertyStatus.ACTIVE,
-		};
-
-		const targetProperty: Property = await this.propertyModel.findOne(search).lean().exec();
-		if (!targetProperty) throw new InternalServerErrorException(Message.NO_DATA_FOUND);
+		this.logger.debug(`getProperty called: propertyId=${propertyId}, memberId=${memberId}`);
+		
+		// First, check if property exists at all
+		const anyProperty = await this.propertyModel.findById(propertyId).lean().exec();
+		if (!anyProperty) {
+			this.logger.warn(`Property with ID ${propertyId} does not exist in database`);
+			throw new InternalServerErrorException(Message.NO_DATA_FOUND);
+		}
+		
+		this.logger.debug(`Property found: status=${anyProperty.propertyStatus}, deletedAt=${anyProperty.deletedAt}`);
+		
+		// Check if property is active and not deleted
+		if (anyProperty.propertyStatus !== PropertyStatus.ACTIVE) {
+			this.logger.warn(`Property status is not ACTIVE: ${anyProperty.propertyStatus}`);
+			throw new InternalServerErrorException(Message.NO_DATA_FOUND);
+		}
+		
+		if (anyProperty.deletedAt) {
+			this.logger.warn(`Property is deleted: deletedAt=${anyProperty.deletedAt}`);
+			throw new InternalServerErrorException(Message.NO_DATA_FOUND);
+		}
+		
+		// Property is valid, use it
+		const targetProperty: Property = anyProperty;
+		this.logger.debug(`Property found successfully: ${targetProperty._id}`);
 
 		if (memberId) {
 			const viewInput = {
@@ -82,7 +100,17 @@ export class PropertyService {
 			targetProperty.meLiked = await this.likeService.checkLikeExistence(likeInput);
 		}
 
-		targetProperty.memberData = await this.memberService.getMember(null, targetProperty.memberId);
+		// Get member data - handle case where member might not exist
+		try {
+			this.logger.debug(`Getting member data for memberId: ${targetProperty.memberId}`);
+			targetProperty.memberData = await this.memberService.getMember(null, targetProperty.memberId);
+			this.logger.debug(`Member data retrieved successfully`);
+		} catch (error) {
+			this.logger.warn(`Failed to get member data for memberId: ${targetProperty.memberId}, error: ${error.message}`);
+			// Don't throw error, just set memberData to null
+			targetProperty.memberData = null;
+		}
+		
 		return targetProperty;
 	}
 
@@ -125,7 +153,13 @@ export class PropertyService {
 	}
 
 	public async getProperties(memberId: ObjectId, input: PropertiesInquiry): Promise<Properties> {
-		const match: T = { propertyStatus: PropertyStatus.ACTIVE };
+		const match: T = { 
+			propertyStatus: PropertyStatus.ACTIVE,
+			$or: [
+				{ deletedAt: null },
+				{ deletedAt: { $exists: false } },
+			], // Only get non-deleted properties
+		};
 		const sort: T = {
 			[input?.sort ?? 'createdAt']: input?.direction ?? Direction.DESC,
 		};
