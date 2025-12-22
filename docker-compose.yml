@@ -50,3 +50,7 @@ networks:
 # locohub-api localhost:4001 <=> container:3007
 # locohub-batch localhost:4002 <=> container:3008
 
+# docker compose up -d
+# docker compose stop
+# docker compose start
+# docker compose restart
