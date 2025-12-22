@@ -1,5 +1,3 @@
-version: '3.3'
-
 services:
   locohub-api:
     container_name: locohub-api

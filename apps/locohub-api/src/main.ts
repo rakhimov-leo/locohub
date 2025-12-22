@@ -20,6 +20,7 @@ async function bootstrap() {
 			'https://www.locohub.uz',
 			'http://locohub.uz',
 			'http://www.locohub.uz',
+			'http://72.61.126.236:4000',
 			// Allow localhost in production for Docker development/testing
 			'http://localhost:4000',
 			'http://localhost:3000',
