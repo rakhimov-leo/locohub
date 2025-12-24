@@ -14,13 +14,17 @@ async function bootstrap() {
 	// CORS configuration - allow only specific domains in production
 	// For Docker development, always allow localhost origins
 	const isProduction = process.env.NODE_ENV === 'production';
-	const allowedOrigins = isProduction
+	
+	// Get allowed origins from environment variable or use defaults
+	const corsAllowedOrigins = process.env.CORS_ALLOWED_ORIGINS;
+	const allowedOrigins = corsAllowedOrigins
+		? corsAllowedOrigins.split(',').map(origin => origin.trim())
+		: isProduction
 		? [
 			'https://locohub.uz',
 			'https://www.locohub.uz',
 			'http://locohub.uz',
 			'http://www.locohub.uz',
-			'http://72.61.126.236:4000',
 			// Allow localhost in production for Docker development/testing
 			'http://localhost:4000',
 			'http://localhost:3000',

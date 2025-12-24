@@ -8,11 +8,13 @@ services:
     volumes:
       - ./:/usr/src/locohub
     working_dir: /usr/src/locohub
+    env_file:
+      - .env
     environment:
-      - NODE_ENV=production
-      - PORT_API=3007
-      - MONGO_PROD=${MONGO_PROD:-mongodb://localhost:27017/locohub}
-      - MONGO_DEV=${MONGO_DEV:-mongodb://localhost:27017/locohub}
+      # All variables are automatically loaded from .env file
+      # Default values below are fallback (if .env is missing)
+      - NODE_ENV=${NODE_ENV:-production}
+      - PORT_API=${PORT_API:-3007}
     networks:
       - monorepo-network
 
