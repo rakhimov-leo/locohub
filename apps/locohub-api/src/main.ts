@@ -39,7 +39,19 @@ async function bootstrap() {
 		];
 	
 	console.log(`[CORS] NODE_ENV: ${process.env.NODE_ENV}, isProduction: ${isProduction}`);
-	console.log(`[CORS] Allowed origins:`, allowedOrigins);
+	// Log origins without exposing IP addresses in production
+	if (isProduction) {
+		const sanitizedOrigins = allowedOrigins.map(origin => {
+			// Hide IP addresses, show only domains
+			if (origin.match(/^\d+\.\d+\.\d+\.\d+/)) {
+				return '[IP_HIDDEN]';
+			}
+			return origin;
+		});
+		console.log(`[CORS] Allowed origins:`, sanitizedOrigins);
+	} else {
+		console.log(`[CORS] Allowed origins:`, allowedOrigins);
+	}
 	
 	app.enableCors({ 
 		origin: allowedOrigins,
